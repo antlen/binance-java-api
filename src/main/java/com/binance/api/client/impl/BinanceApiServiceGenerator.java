@@ -7,6 +7,7 @@ import com.binance.api.client.security.AuthenticationInterceptor;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Converter;
@@ -54,7 +55,7 @@ public class BinanceApiServiceGenerator {
      *
      * @return a new implementation of the API endpoints for the Binance API service.
      */
-    public static <S> S createService(Class<S> serviceClass, String apiKey, String secret) {
+    public static <S> S createService(Class<S> serviceClass, String apiKey, byte[] secret) {
         String baseUrl = null;
         if (!BinanceApiConfig.useTestnet) { baseUrl = BinanceApiConfig.getApiBaseUrl(); }
         else {
@@ -67,7 +68,7 @@ public class BinanceApiServiceGenerator {
                 .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory);
 
-        if (StringUtils.isEmpty(apiKey) || StringUtils.isEmpty(secret)) {
+        if (StringUtils.isEmpty(apiKey) || ArrayUtils.isEmpty(secret)) {
             retrofitBuilder.client(sharedClient);
         } else {
             // `adaptedClient` will use its own interceptor, but share thread pool etc with the 'parent' client

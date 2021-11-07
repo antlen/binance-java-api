@@ -17,7 +17,7 @@ public class BinanceApiClientFactory {
   /**
    * Secret.
    */
-  private String secret;
+  private byte[] secret;
 
   /**
    * Instantiates a new binance api client factory.
@@ -25,7 +25,7 @@ public class BinanceApiClientFactory {
    * @param apiKey the API key
    * @param secret the Secret
    */
-  private BinanceApiClientFactory(String apiKey, String secret) {
+  private BinanceApiClientFactory(String apiKey, byte[] secret) {
     this.apiKey = apiKey;
     this.secret = secret;
     BinanceApiConfig.useTestnet = false;
@@ -40,7 +40,7 @@ public class BinanceApiClientFactory {
    * @param useTestnet true if endpoint is spot test network URL; false if endpoint is production spot API URL.
    * @param useTestnetStreaming true for spot test network websocket streaming; false for no streaming.
    */
-  private BinanceApiClientFactory(String apiKey, String secret, boolean useTestnet, boolean useTestnetStreaming) {
+  private BinanceApiClientFactory(String apiKey, byte[] secret, boolean useTestnet, boolean useTestnetStreaming) {
       this(apiKey, secret);
       if (useTestnet) {
         BinanceApiConfig.useTestnet = true;
@@ -55,8 +55,22 @@ public class BinanceApiClientFactory {
    *
    * @return the binance api client factory
    */
-  public static BinanceApiClientFactory newInstance(String apiKey, String secret) {
+  public static BinanceApiClientFactory newInstance(String apiKey, byte[] secret) {
     return new BinanceApiClientFactory(apiKey, secret);
+  }
+
+  /**
+   * New instance.
+   *
+   * @param apiKey the API key
+   * @param secret the Secret
+   *
+   * @return the binance api client factory
+   * @deprecated use byte[] to store the secret
+   */
+  @Deprecated
+  public static BinanceApiClientFactory newInstance(String apiKey, String secret) {
+    return newInstance(apiKey, secret.getBytes());
   }
 
   /**
@@ -69,10 +83,25 @@ public class BinanceApiClientFactory {
    *
    * @return the binance api client factory.
    */
-    public static BinanceApiClientFactory newInstance(String apiKey, String secret, boolean useTestnet, boolean useTestnetStreaming) {
+    public static BinanceApiClientFactory newInstance(String apiKey, byte[] secret, boolean useTestnet, boolean useTestnetStreaming) {
       return new BinanceApiClientFactory(apiKey, secret, useTestnet, useTestnetStreaming);
   }
 
+  /**
+   * New instance with optional Spot Test Network endpoint.
+   *
+   * @param apiKey the API key
+   * @param secret the Secret
+   * @param useTestnet true if endpoint is spot test network URL; false if endpoint is production spot API URL.
+   * @param useTestnetStreaming true for spot test network websocket streaming; false for no streaming.
+   *
+   * @return the binance api client factory.
+   * @deprecated use byte[] to store the secret
+   */
+  @Deprecated
+  public static BinanceApiClientFactory newInstance(String apiKey, String secret, boolean useTestnet, boolean useTestnetStreaming) {
+    return newInstance(apiKey, secret.getBytes(), useTestnet, useTestnetStreaming);
+  }
   /**
    * New instance without authentication.
    *

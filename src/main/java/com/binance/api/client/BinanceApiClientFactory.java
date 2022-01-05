@@ -2,6 +2,9 @@ package com.binance.api.client;
 
 import com.binance.api.client.impl.*;
 import com.binance.api.client.config.BinanceApiConfig;
+
+import java.util.concurrent.ExecutorService;
+
 import static com.binance.api.client.impl.BinanceApiServiceGenerator.getSharedClient;
 
 /**
@@ -99,6 +102,19 @@ public class BinanceApiClientFactory {
    */
   public BinanceApiRestClient newRestClient() {
     return new BinanceApiRestClientImpl(apiKey, secret);
+  }
+
+  /**
+   * Creates a new asynchronous/non-blocking REST client that uses Executor Services for handling
+   * the request and response threading.
+   *
+   * @param requestService
+   * @param responseService
+   * @return
+   */
+  public BinanceApiAsyncExecutorRestClient newAsyncExecutorRestClient(ExecutorService requestService,
+                                                                      ExecutorService responseService) {
+    return new BinanceApiAsyncExecutorRestClientImpl(newRestClient(), requestService, responseService);
   }
 
   /**

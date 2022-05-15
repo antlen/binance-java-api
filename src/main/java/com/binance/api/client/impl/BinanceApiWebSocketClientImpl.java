@@ -30,7 +30,8 @@ public class BinanceApiWebSocketClientImpl implements BinanceApiWebSocketClient,
     public Closeable onDepthEvent(String symbols, BinanceApiCallback<DepthEvent> callback) {
         final String channel = Arrays.stream(symbols.split(","))
                 .map(String::trim)
-                .map(s -> String.format("%s@depth", s))
+                   .map(s -> String.format("%s@depth@100ms", s))
+                //.map(s -> String.format("%s@depth", s))
                 .collect(Collectors.joining("/"));
         return createNewWebSocket(channel, new BinanceApiWebSocketListener<>(callback, DepthEvent.class));
     }
@@ -75,7 +76,8 @@ public class BinanceApiWebSocketClientImpl implements BinanceApiWebSocketClient,
     public Closeable onBookTickerEvent(String symbols, BinanceApiCallback<BookTickerEvent> callback) {
         final String channel = Arrays.stream(symbols.split(","))
                 .map(String::trim)
-                .map(s -> String.format("%s@bookTicker", s))
+                .map(s -> String.format("%s@bookTicker@100ms", s))
+              //  .map(s -> String.format("%s@bookTicker", s))
                 .collect(Collectors.joining("/"));
         return createNewWebSocket(channel, new BinanceApiWebSocketListener<>(callback, BookTickerEvent.class));
     }

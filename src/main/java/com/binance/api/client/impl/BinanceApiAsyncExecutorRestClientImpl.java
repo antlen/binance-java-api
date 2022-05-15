@@ -19,6 +19,7 @@ import java.util.function.Supplier;
  * Implementation of BinanceApiAsyncExecutorRestClient using ExecutorServices for handling request and responses.
  */
 public class BinanceApiAsyncExecutorRestClientImpl implements BinanceApiAsyncExecutorRestClient {
+
     private final BinanceApiRestClient client;
     private final ExecutorService requestService;
     private final ExecutorService responseService;
@@ -38,6 +39,7 @@ public class BinanceApiAsyncExecutorRestClientImpl implements BinanceApiAsyncExe
             }, responseService);
 
             f.exceptionally(throwable -> {
+                throwable.printStackTrace();
                 responseService.submit(()->callback.onFailure(throwable));
                 return null;
             });

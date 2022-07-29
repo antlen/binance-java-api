@@ -123,4 +123,5 @@ public class UserDataUpdateEvent {
       throw new UnsupportedEventException("Unrecognized user data update event type id: " + eventTypeId);
     }
   }
+
 }
